@@ -306,7 +306,7 @@ footer{padding:70px 0 40px;margin-top:100px;border-top:1px solid var(--line)}
 .sum-row span{color:var(--muted)}
 .sum-row b{font-weight:700;text-align:right}
 .sum-total{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:16px 0 22px;padding-top:18px;border-top:1.5px solid var(--ink)}
-.sum-total b{font-family:Unbounded;font-size:23px;font-weight:600;white-space:nowrap}
+.sum-total b{display:inline-block;font-family:Unbounded;font-size:23px;font-weight:600;white-space:nowrap}
 .field{display:block;margin-bottom:12px}
 .field span{display:block;font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px;letter-spacing:.04em}
 .field input{width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:#fff8;font:inherit;font-weight:600;outline:none;transition:.2s}
@@ -474,6 +474,14 @@ html{overflow-x:hidden}
   .burger{width:40px;height:40px}
   .g-hud .h:nth-child(2){display:none}
   .slot{padding:12px 10px}.slot b{font-size:12.5px}.slot small span:last-child{display:none}
+}
+#mbar{display:none}
+@media (max-width:1000px){
+  body.on-booking #mbar{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:120;align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 18px;border-radius:20px;background:rgba(251,246,239,.96);border:1px solid var(--line);box-shadow:0 18px 40px -18px rgba(58,42,35,.55)}
+  #mbar small{display:block;font-size:12px;color:var(--muted);font-weight:700}
+  #mbar b{font-family:Unbounded;font-size:18px;font-weight:600;white-space:nowrap}
+  #mbar .btn{padding:12px 16px;font-size:14px}
+  body.on-booking footer{padding-bottom:110px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -837,6 +845,7 @@ html{overflow-x:hidden}
 </main>
 
 <canvas id="snowstorm"></canvas>
+<div id="mbar"><div><small id="mbTime"></small><b id="mbTotal"></b></div><button class="btn btn-coral" id="mbGo"><span data-i="b.go"></span><span class="arr">→</span></button></div>
 <div class="modal" id="modal"><div class="sheet"><button class="x" id="mx">×</button><div id="mBody"></div></div></div>
 
 <script>
@@ -890,7 +899,7 @@ ru:{
  "gh.1e":"Цель","gh.1t":"Стать №1 недели","gh.1p":"Рейтинг обнуляется в воскресенье в 23:59. Только лидер получает одноразовый ваучер.",
  "gh.2e":"Серия","gh.2t":"Множитель до ×5","gh.2p":"Каждые 5 пойманных снежинок подряд увеличивают множитель. Удар сбрасывает серию.",
  "gh.3e":"Сложность","gh.3t":"Новый уровень каждые 15 с","gh.3p":"Лёд ускоряется, конусов больше, с 3-го уровня они двигаются, с 4-го — ворота из конусов.",
- "gm.over":"Финиш!","gm.newBest":"Новый рекорд недели! 🎉","gm.top1":"Вы №1 этой недели! 🏆","gm.overP":"Результат: <b>{s}</b> · ваш рекорд недели: <b>{b}</b> · место: <b>#{r}</b>","lb.t":"Топ недели","lb.reset":"сброс через","lb.prize":"Приз только за 1 место","lb.prizeV":"Одноразовый ваучер: 1 час катания бесплатно","lb.empty":"Пока никто не играл — станьте первым","lb.you":"вы","lb.lead":"Вы лидируете — удержите 1 место до воскресенья 23:59","lb.gap":"До 1 места: <b>{n}</b> очков","lb.beat":"Наберите <b>{n}</b>, чтобы стать №1","lb.nick":"Ваш ник:","lb.local":"Демо: рейтинг хранится на этом устройстве.","nick.t":"Как вас назвать в рейтинге?","nick.p":"Ник привязывается к этому устройству и показывается в топе недели.","nick.ph":"Например, IceQueen","nick.go":"Сохранить","nick.err":"2–14 символов: буквы, цифры, пробел, _ или -","nick.change":"Сменить ник","v.t":"🎟 Ваш ваучер победителя","v.p":"Вы были №1 на прошлой неделе. Покажите код на кассе — действует один раз до {d}.","v.use":"Отметить как использованный","v.used":"Ваучер использован","u.d":"д","u.h":"ч","u.m":"м","egg.t":"Вы докатились до финиша!","egg.p":"Нажмите на какао ☕","egg.ok":"Пасхалка найдена! Хорошего катания ❄","egg.label":"финиш","gm.rules":"Что на льду","r1.t":"Снежинка","r1.d":"+10 очков × множитель","r2.t":"Золотая снежинка","r2.d":"+50 очков, встречается редко","r3.t":"Какао","r3.d":"Возвращает одну жизнь","r4.t":"Конус","r4.d":"Минус жизнь и сброс серии","r5.t":"Трещина во льду","r5.d":"Широкая — объезжайте заранее",
+ "gm.over":"Финиш!","gm.newBest":"Новый рекорд недели! 🎉","gm.top1":"Вы №1 этой недели! 🏆","gm.overP":"Результат: <b>{s}</b> · ваш рекорд недели: <b>{b}</b> · место: <b>#{r}</b>","lb.t":"Топ недели","lb.reset":"сброс через","lb.prize":"Приз только за 1 место","lb.prizeV":"Одноразовый ваучер: 1 час катания бесплатно","lb.empty":"Пока никто не играл — станьте первым","lb.you":"вы","lb.lead":"Вы лидируете — удержите 1 место до воскресенья 23:59","lb.gap":"До 1 места: <b>{n}</b> очков","lb.beat":"Наберите <b>{n}</b>, чтобы стать №1","lb.nick":"Ваш ник:","lb.local":"Демо: рейтинг хранится на этом устройстве.","nick.t":"Как вас назвать в рейтинге?","nick.p":"Ник привязывается к этому устройству и показывается в топе недели.","nick.ph":"Например, IceQueen","nick.go":"Сохранить","nick.err":"2–14 символов: буквы, цифры, пробел, _ или -","nick.change":"Сменить ник","v.t":"🎟 Ваш ваучер победителя","v.p":"Вы были №1 на прошлой неделе. Покажите код на кассе — действует один раз до {d}.","v.use":"Отметить как использованный","v.used":"Ваучер использован","u.d":"д","u.h":"ч","u.m":"м","egg.t":"Вы докатились до финиша!","egg.p":"Нажмите на какао ☕","egg.ok":"Пасхалка найдена! Хорошего катания ❄","egg.label":"финиш","b.go":"Оформить","gm.rules":"Что на льду","r1.t":"Снежинка","r1.d":"+10 очков × множитель","r2.t":"Золотая снежинка","r2.d":"+50 очков, встречается редко","r3.t":"Какао","r3.d":"Возвращает одну жизнь","r4.t":"Конус","r4.d":"Минус жизнь и сброс серии","r5.t":"Трещина во льду","r5.d":"Широкая — объезжайте заранее",
  
  "c.e":"Контакты","c.h":"Приходите <span class='serif' style='color:var(--coral)'>кататься</span>","c.p":"Каток внутри ТРЦ Riviera — тепло добираться в любую погоду, рядом большая парковка.",
  "c.hours":"Часы работы","c.h1":"Ежедневно","c.h2":"Сеансы","c.h2v":"30 мин или 1 час","c.h3":"Заливка льда","c.h3v":"10 мин каждые 30 мин","c.h4":"Касса проката","c.h4v":"до 21:30",
@@ -945,7 +954,7 @@ uz:{
  "gh.1e":"Maqsad","gh.1t":"Haftaning №1 bo‘lish","gh.1p":"Reyting yakshanba 23:59 da nolga tushadi. Faqat yetakchi bir martalik vaucher oladi.",
  "gh.2e":"Seriya","gh.2t":"Ko‘paytiruvchi ×5 gacha","gh.2p":"Ketma-ket har 5 ta qor parchasi ko‘paytiruvchini oshiradi. Zarba seriyani nolga tushiradi.",
  "gh.3e":"Qiyinlik","gh.3t":"Har 15 soniyada yangi daraja","gh.3p":"Muz tezlashadi, konuslar ko‘payadi, 3-darajadan ular harakatlanadi, 4-dan — konus darvozalari.",
- "gm.over":"Marra!","gm.newBest":"Haftaning yangi rekordi! 🎉","gm.top1":"Siz bu haftaning №1! 🏆","gm.overP":"Natija: <b>{s}</b> · haftalik rekordingiz: <b>{b}</b> · o‘rin: <b>#{r}</b>","lb.t":"Hafta topi","lb.reset":"yangilanishiga","lb.prize":"Faqat 1-o‘rin uchun sovg‘a","lb.prizeV":"Bir martalik vaucher: 1 soat bepul uchish","lb.empty":"Hali hech kim o‘ynamadi — birinchi bo‘ling","lb.you":"siz","lb.lead":"Siz yetakchisiz — 1-o‘rinni yakshanba 23:59 gacha saqlang","lb.gap":"1-o‘ringacha: <b>{n}</b> ochko","lb.beat":"№1 bo‘lish uchun <b>{n}</b> to‘plang","lb.nick":"Nikingiz:","lb.local":"Demo: reyting shu qurilmada saqlanadi.","nick.t":"Reytingda sizni qanday atash kerak?","nick.p":"Nik shu qurilmaga bog‘lanadi va hafta topida ko‘rsatiladi.","nick.ph":"Masalan, IceQueen","nick.go":"Saqlash","nick.err":"2–14 belgi: harflar, raqamlar, bo‘sh joy, _ yoki -","nick.change":"Nikni o‘zgartirish","v.t":"🎟 G‘olib vaucheringiz","v.p":"O‘tgan hafta siz №1 edingiz. Kodni kassada ko‘rsating — {d} gacha bir marta amal qiladi.","v.use":"Ishlatilgan deb belgilash","v.used":"Vaucher ishlatilgan","u.d":"k","u.h":"s","u.m":"d","egg.t":"Marraga yetib keldingiz!","egg.p":"Kakaoni bosing ☕","egg.ok":"Sirli sovg‘a topildi! Yoqimli uchish ❄","egg.label":"marra","gm.rules":"Muzda nimalar bor","r1.t":"Qor parchasi","r1.d":"+10 ochko × ko‘paytiruvchi","r2.t":"Oltin qor parchasi","r2.d":"+50 ochko, kam uchraydi","r3.t":"Kakao","r3.d":"Bitta jonni qaytaradi","r4.t":"Konus","r4.d":"Minus jon va seriya nolga","r5.t":"Muzdagi yoriq","r5.d":"Keng — oldindan aylanib o‘ting",
+ "gm.over":"Marra!","gm.newBest":"Haftaning yangi rekordi! 🎉","gm.top1":"Siz bu haftaning №1! 🏆","gm.overP":"Natija: <b>{s}</b> · haftalik rekordingiz: <b>{b}</b> · o‘rin: <b>#{r}</b>","lb.t":"Hafta topi","lb.reset":"yangilanishiga","lb.prize":"Faqat 1-o‘rin uchun sovg‘a","lb.prizeV":"Bir martalik vaucher: 1 soat bepul uchish","lb.empty":"Hali hech kim o‘ynamadi — birinchi bo‘ling","lb.you":"siz","lb.lead":"Siz yetakchisiz — 1-o‘rinni yakshanba 23:59 gacha saqlang","lb.gap":"1-o‘ringacha: <b>{n}</b> ochko","lb.beat":"№1 bo‘lish uchun <b>{n}</b> to‘plang","lb.nick":"Nikingiz:","lb.local":"Demo: reyting shu qurilmada saqlanadi.","nick.t":"Reytingda sizni qanday atash kerak?","nick.p":"Nik shu qurilmaga bog‘lanadi va hafta topida ko‘rsatiladi.","nick.ph":"Masalan, IceQueen","nick.go":"Saqlash","nick.err":"2–14 belgi: harflar, raqamlar, bo‘sh joy, _ yoki -","nick.change":"Nikni o‘zgartirish","v.t":"🎟 G‘olib vaucheringiz","v.p":"O‘tgan hafta siz №1 edingiz. Kodni kassada ko‘rsating — {d} gacha bir marta amal qiladi.","v.use":"Ishlatilgan deb belgilash","v.used":"Vaucher ishlatilgan","u.d":"k","u.h":"s","u.m":"d","egg.t":"Marraga yetib keldingiz!","egg.p":"Kakaoni bosing ☕","egg.ok":"Sirli sovg‘a topildi! Yoqimli uchish ❄","egg.label":"marra","b.go":"Rasmiylashtirish","gm.rules":"Muzda nimalar bor","r1.t":"Qor parchasi","r1.d":"+10 ochko × ko‘paytiruvchi","r2.t":"Oltin qor parchasi","r2.d":"+50 ochko, kam uchraydi","r3.t":"Kakao","r3.d":"Bitta jonni qaytaradi","r4.t":"Konus","r4.d":"Minus jon va seriya nolga","r5.t":"Muzdagi yoriq","r5.d":"Keng — oldindan aylanib o‘ting",
  
  "c.e":"Aloqa","c.h":"Uchgani <span class='serif' style='color:var(--coral)'>keling</span>","c.p":"Muz maydoni Riviera savdo markazi ichida — har qanday ob-havoda kelish qulay, yonida katta avtoturargoh.",
  "c.hours":"Ish vaqti","c.h1":"Har kuni","c.h2":"Seanslar","c.h2v":"30 daq yoki 1 soat","c.h3":"Muz quyish","c.h3v":"har 30 daqiqada 10 daq","c.h4":"Ijara kassasi","c.h4v":"21:30 gacha",
@@ -1000,7 +1009,7 @@ en:{
  "gh.1e":"Goal","gh.1t":"Be the week's #1","gh.1p":"The ranking resets on Sunday at 23:59. Only the leader gets the one-time voucher.",
  "gh.2e":"Streak","gh.2t":"Multiplier up to ×5","gh.2p":"Every 5 snowflakes in a row raise the multiplier. A hit resets the streak.",
  "gh.3e":"Difficulty","gh.3t":"New level every 15 s","gh.3p":"The ice speeds up and cones multiply; from level 3 they move, from level 4 come cone gates.",
- "gm.over":"Finish!","gm.newBest":"New weekly best! 🎉","gm.top1":"You're this week's #1! 🏆","gm.overP":"Score: <b>{s}</b> · your weekly best: <b>{b}</b> · rank: <b>#{r}</b>","lb.t":"Weekly top","lb.reset":"resets in","lb.prize":"Prize for #1 only","lb.prizeV":"One-time voucher: 1 hour of free skating","lb.empty":"No one has played yet — be the first","lb.you":"you","lb.lead":"You're leading — hold #1 until Sunday 23:59","lb.gap":"To reach #1: <b>{n}</b> points","lb.beat":"Score <b>{n}</b> to take #1","lb.nick":"Your nickname:","lb.local":"Demo: the ranking is stored on this device.","nick.t":"What should the ranking call you?","nick.p":"Your nickname is tied to this device and shown in the weekly top.","nick.ph":"e.g. IceQueen","nick.go":"Save","nick.err":"2–14 characters: letters, digits, space, _ or -","nick.change":"Change","v.t":"🎟 Your winner's voucher","v.p":"You were #1 last week. Show this code at the desk — valid once until {d}.","v.use":"Mark as used","v.used":"Voucher used","u.d":"d","u.h":"h","u.m":"m","egg.t":"You made it to the finish!","egg.p":"Tap the cocoa ☕","egg.ok":"Easter egg found! Have a great skate ❄","egg.label":"finish","gm.rules":"What's on the ice","r1.t":"Snowflake","r1.d":"+10 points × multiplier","r2.t":"Golden snowflake","r2.d":"+50 points, rare","r3.t":"Cocoa","r3.d":"Gives back one life","r4.t":"Cone","r4.d":"Lose a life and the streak","r5.t":"Crack in the ice","r5.d":"Wide — steer around early",
+ "gm.over":"Finish!","gm.newBest":"New weekly best! 🎉","gm.top1":"You're this week's #1! 🏆","gm.overP":"Score: <b>{s}</b> · your weekly best: <b>{b}</b> · rank: <b>#{r}</b>","lb.t":"Weekly top","lb.reset":"resets in","lb.prize":"Prize for #1 only","lb.prizeV":"One-time voucher: 1 hour of free skating","lb.empty":"No one has played yet — be the first","lb.you":"you","lb.lead":"You're leading — hold #1 until Sunday 23:59","lb.gap":"To reach #1: <b>{n}</b> points","lb.beat":"Score <b>{n}</b> to take #1","lb.nick":"Your nickname:","lb.local":"Demo: the ranking is stored on this device.","nick.t":"What should the ranking call you?","nick.p":"Your nickname is tied to this device and shown in the weekly top.","nick.ph":"e.g. IceQueen","nick.go":"Save","nick.err":"2–14 characters: letters, digits, space, _ or -","nick.change":"Change","v.t":"🎟 Your winner's voucher","v.p":"You were #1 last week. Show this code at the desk — valid once until {d}.","v.use":"Mark as used","v.used":"Voucher used","u.d":"d","u.h":"h","u.m":"m","egg.t":"You made it to the finish!","egg.p":"Tap the cocoa ☕","egg.ok":"Easter egg found! Have a great skate ❄","egg.label":"finish","b.go":"Checkout","gm.rules":"What's on the ice","r1.t":"Snowflake","r1.d":"+10 points × multiplier","r2.t":"Golden snowflake","r2.d":"+50 points, rare","r3.t":"Cocoa","r3.d":"Gives back one life","r4.t":"Cone","r4.d":"Lose a life and the streak","r5.t":"Crack in the ice","r5.d":"Wide — steer around early",
  
  "c.e":"Contacts","c.h":"Come <span class='serif' style='color:var(--coral)'>skate with us</span>","c.p":"The rink is inside Riviera Mall — a warm trip in any weather, with a large parking lot next door.",
  "c.hours":"Opening hours","c.h1":"Daily","c.h2":"Sessions","c.h2v":"30 min or 1 hour","c.h3":"Ice resurfacing","c.h3v":"10 min every 30 min","c.h4":"Rental desk","c.h4v":"until 21:30",
@@ -1118,7 +1127,7 @@ function showView(r){
 function route(forced){
   let r=typeof forced==='string'?forced:(location.hash||'').slice(1);if(!routes.includes(r))r='home';
   if(curRoute==='game'&&r!=='game'&&G.run&&!G.paused)pauseGame();
-  curRoute=r;
+  curRoute=r;document.body.classList.toggle('on-booking',r==='booking');
   $$('#links a').forEach(a=>a.classList.toggle('on',a.dataset.r===r));
   $('#links').classList.remove('mob');
   const cur=$('.view.active');clearTimeout(navT);
@@ -1316,9 +1325,10 @@ const B={day:0,dur:30,start:null,adult:1,kid:0,rent:0};
 const dayDate=i=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+i);return d};
 function renderDays(){
   $('#days').innerHTML=Array.from({length:10},(_,i)=>{const d=dayDate(i);return `<button class="day ${i===B.day?'on':''}"><small>${i===0?t('today'):i===1?t('tmrw'):t('dow')[d.getDay()]}</small><b>${d.getDate()}</b><small>${t('mon')[d.getMonth()]}</small></button>`}).join('');
-  $$('#days .day').forEach((b,i)=>b.onclick=()=>{B.day=i;B.start=null;renderDays();renderSlots();summary()});
+  $$('#days .day').forEach((b,i)=>b.onclick=()=>{B.day=i;keepStart();renderDays();renderSlots();summary()});
 }
-$$('#dur button').forEach(b=>b.onclick=()=>{$$('#dur button').forEach(x=>x.classList.remove('on'));b.classList.add('on');B.dur=+b.dataset.d;B.start=null;renderSlots();summary()});
+$$('#dur button').forEach(b=>b.onclick=()=>{$$('#dur button').forEach(x=>x.classList.remove('on'));b.classList.add('on');B.dur=+b.dataset.d;keepStart();renderSlots();summary()});
+function keepStart(){if(B.start===null)return;const d=dayDate(B.day),nm=nowMin(),ok=sessions(d,B.dur).some(x=>x.start===B.start&&!(B.day===0&&x.start<=nm)&&x.occ<CAP-1);if(!ok)B.start=null}
 function curSession(){if(B.start===null)return null;return sessions(dayDate(B.day),B.dur).find(s=>s.start===B.start)||null}
 function renderSlots(){
   const d=dayDate(B.day),nm=nowMin(),wkd=d.getDay()===0||d.getDay()===6;
@@ -1333,11 +1343,13 @@ function summary(){
   const d=dayDate(B.day),s=curSession(),g=B.adult+B.kid;
   $('#sDate').textContent=`${t('dow')[d.getDay()]}, ${d.getDate()} ${t('mon')[d.getMonth()]}`;
   $('#sGuests').textContent=`${B.adult} ${t('ad')}${B.kid?' + '+B.kid+' '+t('kd'):''}${B.rent?' · '+t('rentS')+' '+B.rent:''}`;
-  let total=0;
-  if(s){const base=priceFor(d,s.start);$('#sTime').textContent=`${hm(s.start)}–${hm(s.end)}`;$('#sOcc').textContent=`${s.occ} → ${Math.min(CAP,s.occ+g)} / ${CAP}`;
-    total=B.adult*base+B.kid*Math.round(base*.7/1000)*1000+B.rent*30000;miniRink(s.occ)}
+  const base=priceFor(),total=B.adult*base+B.kid*Math.round(base*.7/1000)*1000+B.rent*30000;
+  if(s){$('#sTime').textContent=`${hm(s.start)}–${hm(s.end)}`;$('#sOcc').textContent=`${s.occ} → ${Math.min(CAP,s.occ+g)} / ${CAP}`;
+    miniRink(s.occ)}
   else{$('#sTime').textContent=t('sm.none');$('#sOcc').textContent='—';miniRink(0)}
-  $('#sTotal').textContent=fmt(total);
+  const txt=(s?'':'≈ ')+fmt(total),st=$('#sTotal');
+  if(st.textContent!==txt){st.textContent=txt;st.animate([{transform:'scale(1.08)',color:'#E06C4E'},{transform:'none',color:''}],{duration:420,easing:'ease-out'})}
+  const mb=$('#mbar');if(mb){$('#mbTotal').textContent=txt;$('#mbTime').textContent=s?`${hm(s.start)}–${hm(s.end)} · ${g} ${t('sm.guests').toLowerCase()}`:t('sm.none')}
 }
 function miniRink(o){let h='';const n=Math.round(o*.9);
   for(let i=0;i<n;i++){const a=hash(i*3+B.day)*6.28,r=Math.sqrt(hash(i*5+1))*.9,x=150+Math.cos(a)*r*118,y=75+Math.sin(a)*r*44,x2=150+Math.cos(a+.35)*r*118;
@@ -1347,6 +1359,7 @@ $$('.stepper').forEach(s=>{const k=s.dataset.k,[m,,p]=s.children,lim={adult:10,k
   m.onclick=()=>{B[k]=Math.max(0,B[k]-1);if(B.adult+B.kid===0)B.adult=1;B.rent=Math.min(B.rent,B.adult+B.kid);sync();summary()};
   p.onclick=()=>{B[k]=Math.min(lim,B[k]+1);B.rent=Math.min(B.rent,B.adult+B.kid);sync();summary()}});
 function sync(){$$('.stepper').forEach(s=>s.querySelector('output').textContent=B[s.dataset.k])}
+$('#mbGo').onclick=()=>{const r=$('.summary').getBoundingClientRect();window.scrollTo({top:r.top+scrollY-96,behavior:'smooth'})};
 $('#bookBtn').onclick=()=>{
   const w=$('#bWarn'),s=curSession();if(!s){w.textContent=t('w.slot');return}
   const n=$('#bName').value.trim(),ph=$('#bPhone').value.replace(/\D/g,'');if(!n||ph.length<9){w.textContent=t('w.form');return}
